@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet } from "react-native";
 import { SvgXml } from "react-native-svg";
 import star from "../../../../assets/star";
 import open from "../../../../assets/open";
@@ -38,10 +38,15 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
       <Info>
         <Text variant="label">{name}</Text>
         <Address>{address}</Address>
-        <Section style={styles.Section}>
+        <Section>
           <Rating>
-            {ratingArray.map((_, index) => (
-              <SvgXml key={`star-${placeId}-${index}`} xml={star} width={20} height={20} />
+            {ratingArray.map((_, i) => (
+              <SvgXml
+                key={`star-${placeId}-${i}`}
+                xml={star}
+                width={20}
+                height={20}
+              />
             ))}
           </Rating>
           <SectionEnd>
@@ -61,6 +66,4 @@ export const RestaurantInfoCard = ({ restaurant = {} }) => {
       </Info>
     </RestaurantCard>
   );
-};
-
-const styles = StyleSheet.create({});
+}; 

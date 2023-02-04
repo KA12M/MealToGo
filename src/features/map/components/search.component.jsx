@@ -1,28 +1,30 @@
-import React, { useState, useContext, useEffect } from "react";
-import { StyleSheet } from "react-native";
-import { Searchbar } from "react-native-paper";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components/native";
-
+import { Searchbar } from "react-native-paper";
 import { LocationContext } from "../../../services/location/location.context";
 
 const SearchContainer = styled.View`
   padding: ${(props) => props.theme.space[3]};
+  position: absolute;
+  z-index: 999;
+  top: 90px;
+  width: 100%;
 `;
 
-const SearchComponent = () => {
+export const Search = () => {
   const { keyword, search } = useContext(LocationContext);
   const [searchKeyword, setSearchKeyword] = useState(keyword);
 
   useEffect(() => {
-    search(searchKeyword);
+    search(keyword);
     setSearchKeyword(keyword)
   }, [keyword]);
 
   return (
-    <SearchContainer style={Styles.search}>
+    <SearchContainer>
       <Searchbar
-        style={Styles.bodySearch}
-        placeholder="Search"
+        placeholder="Search for a location"
+        icon="map"
         value={searchKeyword}
         onSubmitEditing={() => {
           search(searchKeyword);
@@ -34,11 +36,3 @@ const SearchComponent = () => {
     </SearchContainer>
   );
 };
-
-export default SearchComponent;
-
-const Styles = StyleSheet.create({
-  bodySearch: {
-    borderRadius: 100 / 2,
-  },
-});
