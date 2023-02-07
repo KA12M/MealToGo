@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar as ExpoStatusBar } from "expo-status-bar";
 import { ThemeProvider } from "styled-components/native";
 
@@ -14,8 +14,11 @@ import { LocationContextProvider } from "./src/services/location/location.contex
 import { Navigation } from "./src/infrastructure/navigation";
 import "react-native-gesture-handler";
 import { FavouritesContextProvider } from "./src/services/favourites/favourites.context";
+import { firebase } from "./firebaseConfig";
 
 export default function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   let [OswaldLoaded] = useOswald({
     Oswald_400Regular,
   });
@@ -23,9 +26,29 @@ export default function App() {
     Lato_400Regular,
   });
 
+  useEffect(() => {
+    setTimeout(() => {
+      firebase.auth
+        .signInWithEmailAndPassword(
+          firebase.getAuth,
+          "tom@test.com",
+          "Pa$$w0rd5"
+        )
+        .then((user) => {
+          setIsAuthenticated(true);
+        })
+        .catch((error) => {
+          setIsAuthenticated(false);
+          console.log(error);
+        });
+    }, 2000);
+  }, []);
+
   if (!OswaldLoaded || !LatoLoaded) {
     return null;
   }
+
+  if (!isAuthenticated) return null;
 
   return (
     <ThemeProvider theme={theme}>
